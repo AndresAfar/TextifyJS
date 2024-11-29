@@ -1,8 +1,18 @@
 {
-  "name": "rich-text-editor-textifyjs",
+  "name": "textifyjs",
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "files": ["dist"],
+  "main": "./dist/textifyjs.umd.cjs",
+  "module": "./dist/textifyjs.js",
+  "exports": {
+    ".": {
+      "import": "./dist/textifyjs.js",
+      "require": "./dist/textifyjs.umd.cjs"
+    },
+    "./dist/textifyjs.css": "./dist/textifyjs.css"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",

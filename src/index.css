@@ -1,0 +1,39 @@
+/* src/style.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+
+  .rich-editor-container {
+    @apply max-w-4xl mx-auto my-8 px-4;
+  }
+  
+  .rich-editor-container .toolbar-btn {
+    @apply p-2 rounded hover:bg-gray-100 transition-colors duration-200
+           text-gray-700 hover:text-gray-900 focus:outline-none focus:ring-2
+           focus:ring-blue-500 focus:ring-opacity-50;
+  }
+  
+  .rich-editor-container .toolbar-btn.active {
+    @apply bg-blue-100 text-blue-700;
+  }
+  
+  .rich-editor-container .toolbar-select {
+    @apply px-2 py-1 border border-gray-300 rounded text-sm
+           focus:outline-none focus:ring-2 focus:ring-blue-500
+           focus:border-blue-500;
+  }
+  
+  .rich-editor-container .editor {
+    @apply prose prose-sm max-w-none;
+  }
+  
+  .rich-editor-container .editor img {
+    @apply max-w-full h-auto;
+  }
+  
+  .rich-editor-container .editor a {
+    @apply text-blue-600 hover:text-blue-800 underline;
+  }
+}
