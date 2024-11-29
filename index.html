@@ -1,0 +1,113 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Editor de Texto Avanzado</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script type="module" src="/src/main.js"></script>
+    <link href="/src/style.css" rel="stylesheet" />
+  </head>
+  <body class="bg-gray-50">
+    <div class="max-w-4xl mx-auto my-8 px-4">
+      <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+        <!-- Toolbar -->
+        <div class="border-b border-gray-200 p-4">
+          <div class="flex flex-wrap gap-2">
+            <!-- Texto y Párrafo -->
+            <div class="flex items-center space-x-2 border-r pr-2">
+              <select id="formatBlock" class="toolbar-select">
+                <option value="p">Normal</option>
+                <option value="h1">Título 1</option>
+                <option value="h2">Título 2</option>
+                <option value="h3">Título 3</option>
+              </select>
+              
+              <select id="fontName" class="toolbar-select">
+                <option value="Arial">Arial</option>
+                <option value="Times New Roman">Times New Roman</option>
+                <option value="Courier New">Courier New</option>
+              </select>
+            </div>
+
+            <!-- Formato básico -->
+            <div class="flex items-center space-x-1 border-r pr-2">
+              <button data-command="bold" class="toolbar-btn" title="Negrita">
+                <i class="fas fa-bold"></i>
+              </button>
+              <button data-command="italic" class="toolbar-btn" title="Cursiva">
+                <i class="fas fa-italic"></i>
+              </button>
+              <button data-command="underline" class="toolbar-btn" title="Subrayado">
+                <i class="fas fa-underline"></i>
+              </button>
+              <button data-command="strikethrough" class="toolbar-btn" title="Tachado">
+                <i class="fas fa-strikethrough"></i>
+              </button>
+            </div>
+
+            <!-- Alineación -->
+            <div class="flex items-center space-x-1 border-r pr-2">
+              <button data-command="justifyLeft" class="toolbar-btn" title="Alinear izquierda">
+                <i class="fas fa-align-left"></i>
+              </button>
+              <button data-command="justifyCenter" class="toolbar-btn" title="Centrar">
+                <i class="fas fa-align-center"></i>
+              </button>
+              <button data-command="justifyRight" class="toolbar-btn" title="Alinear derecha">
+                <i class="fas fa-align-right"></i>
+              </button>
+              <button data-command="justifyFull" class="toolbar-btn" title="Justificar">
+                <i class="fas fa-align-justify"></i>
+              </button>
+            </div>
+
+            <!-- Listas -->
+            <div class="flex items-center space-x-1 border-r pr-2">
+              <button data-command="insertUnorderedList" class="toolbar-btn" title="Lista con viñetas">
+                <i class="fas fa-list-ul"></i>
+              </button>
+              <button data-command="insertOrderedList" class="toolbar-btn" title="Lista numerada">
+                <i class="fas fa-list-ol"></i>
+              </button>
+            </div>
+
+            <!-- Otros elementos -->
+            <div class="flex items-center space-x-1">
+              <button data-command="createLink" class="toolbar-btn" title="Insertar enlace">
+                <i class="fas fa-link"></i>
+              </button>
+              <button id="image-upload" class="toolbar-btn" title="Insertar imagen">
+                <i class="fas fa-image"></i>
+              </button>
+              <button data-command="undo" class="toolbar-btn" title="Deshacer">
+                <i class="fas fa-undo"></i>
+              </button>
+              <button data-command="redo" class="toolbar-btn" title="Rehacer">
+                <i class="fas fa-redo"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Editor Area -->
+        <div class="relative">
+          <div
+            id="editor"
+            contenteditable="true"
+            class="min-h-[400px] p-6 focus:outline-none"
+          >
+            <p>Comienza a escribir aquí...</p>
+          </div>
+        </div>
+
+        <!-- Statusbar -->
+        <div class="bg-gray-50 px-4 py-2 border-t border-gray-200 flex justify-between text-sm text-gray-500">
+          <div id="charCount">Caracteres: 0</div>
+          <div id="wordCount">Palabras: 0</div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
