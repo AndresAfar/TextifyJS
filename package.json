@@ -1,16 +1,16 @@
 {
-  "name": "textifyjs",
+  "name": "textifyjs-lib",
   "version": "0.0.0",
   "type": "module",
   "files": ["dist"],
-  "main": "./dist/textifyjs.umd.cjs",
-  "module": "./dist/textifyjs.js",
+  "main": "./dist/textifyjslib.umd.cjs",
+  "module": "./dist/textifyjslib.js",
   "exports": {
     ".": {
-      "import": "./dist/textifyjs.js",
-      "require": "./dist/textifyjs.umd.cjs"
+      "import": "./dist/textifyjslib.js",
+      "require": "./dist/textifyjslib.umd.cjs"
     },
-    "./dist/textifyjs.css": "./dist/textifyjs.css"
+    "./dist/textifyjslib.css": "./dist/textifyjslib.css"
   },
   "scripts": {
     "dev": "vite",
