@@ -6,7 +6,7 @@
 @layer components {
 
   .rich-editor-container {
-    @apply max-w-4xl mx-auto my-8 px-4;
+    @apply my-8 px-4;
   }
   
   .rich-editor-container .toolbar-btn {

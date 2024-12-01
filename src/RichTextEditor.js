@@ -7,6 +7,8 @@ export class RichTextEditor {
         : selector;
       
       this.options = {
+        height: 510,
+        width: 896,
         placeholder: 'Comienza a escribir aquí...',
         toolbar: {
           basic: true,
@@ -15,6 +17,17 @@ export class RichTextEditor {
           lists: true,
           media: true,
         },
+        fonts: [
+          { name: 'Arial', value: 'Arial' },
+          { name: 'Times New Roman', value: 'Times New Roman' },
+          { name: 'Courier New', value: 'Courier New' },
+          { name: 'Georgia', value: 'Georgia' },
+          { name: 'Verdana', value: 'Verdana' }
+        ],
+        colors: [
+          '#000000', '#FFFFFF', '#FF0000', '#00FF00', '#0000FF',
+          '#FFFF00', '#00FFFF', '#FF00FF', '#C0C0C0', '#808080',
+        ],
         counters: true,
         ...options
       };
@@ -31,6 +44,17 @@ export class RichTextEditor {
   
     createStructure() {
       this.container.classList.add('rich-editor-container');
+      // Crear clase CSS dinámica con las dimensiones
+      const pxToRem = (px) => px / 16; // Conversión de px a rem
+
+      const style = document.createElement('style');
+      style.innerHTML = `
+        .rich-editor-container {
+          max-width: ${pxToRem(this.options.width)}rem; 
+          max-height: ${pxToRem(this.options.height)}rem; 
+        }
+      `;
+      document.head.appendChild(style);
       
       // Crear estructura HTML
       this.container.innerHTML = `
@@ -62,12 +86,14 @@ export class RichTextEditor {
               <option value="h1">Título 1</option>
               <option value="h2">Título 2</option>
               <option value="h3">Título 3</option>
+              <option value="h4">Título 4</option>
+              <option value="pre">Código</option>
             </select>
             
             <select class="font-name toolbar-select">
-              <option value="Arial">Arial</option>
-              <option value="Times New Roman">Times New Roman</option>
-              <option value="Courier New">Courier New</option>
+              ${this.options.fonts.map(font => 
+                `<option value="${font.value}">${font.name}</option>`
+              ).join('')}
             </select>
           </div>
         `);
@@ -86,7 +112,24 @@ export class RichTextEditor {
             <button data-command="underline" class="toolbar-btn" title="Subrayado">
               <i class="fas fa-underline"></i>
             </button>
+            <button data-command="strikethrough" class="toolbar-btn" title="Tachado">
+              <i class="fas fa-strikethrough"></i>
+            </button>
+            <select class="text-color toolbar-select">
+              <option value="#374151">Color de texto</option>
+              ${this.options.colors.map(color => 
+                `<option value="${color}" style="background-color: ${color}">${color}</option>`
+              ).join('')}
+            </select>
+  
+            <select class="bg-color toolbar-select">
+              <option value="">Color de fondo</option>
+              ${this.options.colors.map(color => 
+                `<option value="${color}" style="background-color: ${color}">${color}</option>`
+              ).join('')}
+            </select>
           </div>
+
         `);
       }
 
@@ -104,6 +147,12 @@ export class RichTextEditor {
               </button>
               <button data-command="justifyFull" class="toolbar-btn" title="Justificar">
                 <i class="fas fa-align-justify"></i>
+              </button>
+              <button data-command="indent" class="toolbar-btn" title="Aumentar sangría">
+                <i class="fas fa-indent"></i>
+              </button>
+              <button data-command="outdent" class="toolbar-btn" title="Disminuir sangría">
+                <i class="fas fa-outdent"></i>
               </button>
           </div>
         `)
@@ -175,6 +224,45 @@ export class RichTextEditor {
       if (formatBlock) {
         formatBlock.addEventListener('change', () => {
           this.executeCommand('formatBlock', formatBlock.value);
+        });
+      }
+
+      // fontName
+      const fontName = this.container.querySelector('.font-name');
+      if (fontName) {
+        fontName.addEventListener('change', () => {
+          this.executeCommand('fontName', fontName.value);
+        });
+      }
+
+      // textColor
+      const textColor = this.container.querySelector('.text-color');
+      if (textColor) {
+        textColor.addEventListener('change', () => {
+          this.executeCommand('foreColor', textColor.value);
+        });
+      }
+
+      // bgColor
+      const bgColor = this.container.querySelector('.bg-color');
+      if (bgColor) {
+        bgColor.addEventListener('change', (e) => {
+          const selectedValue = e.target.value;
+          if (selectedValue === '') {
+            // First we try to remove the color using removeFormat
+            this.executeCommand('removeFormat');
+            
+            // Como respaldo, también establecemos explícitamente el color de fondo a transparente
+            try {
+              document.execCommand('backColor', false, 'transparent');
+              // As a backup, we also explicitly set the background color to transparent:
+              document.execCommand('hiliteColor', false, 'transparent');
+            } catch(e) {
+              console.log('Error al remover color:', e);
+            }
+          } else {
+            this.executeCommand('hiliteColor', selectedValue);
+          }
         });
       }
 
