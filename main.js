@@ -2,6 +2,8 @@ import RichTextEditor from './src/RichTextEditor.js';
 
 // Crear una instancia del editor
 const editor = new RichTextEditor('#editor-container', {
+  height: 510,
+  width: 896,
   placeholder: 'Escribe aquí...',
   toolbar: {
     basic: true,
@@ -10,14 +12,11 @@ const editor = new RichTextEditor('#editor-container', {
     lists: true,
     media: true,
   },
+  fonts: [
+    { name: 'Times New Roman', value: 'Times New Roman' },
+    { name: 'Georgia', value: 'Georgia' },
+  ],
   counters: true,
-  styles: {
-    containerClass: '',
-    toolbarClass: '',
-    editorClass: '',
-    buttonClass: '',
-    counterClass: 'background-color: aqua;'
-  },
   colors: ['#640D5F', '#3C552D']
 });
 

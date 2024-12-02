@@ -36,7 +36,7 @@ Example HTML Integration
     <html lang="en">
     <head>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/textifyjs-lib/dist/textifyjslib.css">
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
         <title>My web</title>
     </head>
     <body>
@@ -55,17 +55,25 @@ Import in a JavaScript Project
 
     // Create an instance of the editor
     const editor = new RichTextEditor('#editor-container', {
-    placeholder: 'Escribe aquí...',
-    toolbar: {
-        basic: true,
-        formatting: true,
-        alignment: true,
-        lists: true,
-        media: true
-    },
-    counters: true
+        height: 510,
+        width: 896,
+        placeholder: 'Escribe aquí...',
+        toolbar: {
+            basic: true,
+            formatting: true,
+            alignment: true,
+            lists: true,
+            media: true,
+        },
+        // Custom fonts
+        fonts: [
+            { name: 'Times New Roman', value: 'Times New Roman' },
+            { name: 'Georgia', value: 'Georgia' },
+        ],
+        // Custom colors text
+        colors: ['#640D5F', '#3C552D'],
+        counters: true,
     });
-
 
     // Get the content
     const content = editor.getContent();
@@ -80,4 +88,4 @@ Import in a JavaScript Project
 
 ### Preview
 
-![alt text](./src/img/image.png)
+![alt text](./src/img/image-textifyjs.png)
