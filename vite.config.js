@@ -8,9 +8,11 @@ export default defineConfig({
   build: {
     lib: {
       entry: resolve(__dirname, 'src/RichTextEditor.js'),
+      translations: resolve(__dirname, 'src/translations.js'),
       name: 'textifyjslib',
       // the proper extensions will be added
       fileName: 'textifyjslib',
+      formats: ['es', 'umd', 'cjs'],
     },
     rollupOptions: {
       // make sure to externalize deps that shouldn't be bundled

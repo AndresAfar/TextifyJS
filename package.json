@@ -1,14 +1,31 @@
 {
   "name": "textifyjs-lib",
-  "version": "1.0.0",
+  "version": "1.1.0",
+  "author": "Andres Afar <andres.afarx@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AndresAfar/TextifyJS.git"
+  },
+  "keywords": [
+    "textify",
+    "editor",
+    "rich text",
+    "wysiwyg",
+    "i18n"
+  ],
   "type": "module",
-  "files": ["dist"],
+  "files": ["dist", "src/translations.js"],
   "main": "./dist/textifyjslib.umd.cjs",
   "module": "./dist/textifyjslib.js",
   "exports": {
     ".": {
       "import": "./dist/textifyjslib.js",
       "require": "./dist/textifyjslib.umd.cjs"
+    },
+    "./translations": {
+      "import": "./src/translations.js",
+      "require": "./dist/translations.cjs"
     },
     "./dist/textifyjslib.css": "./dist/textifyjslib.css"
   },

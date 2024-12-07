@@ -1,10 +1,11 @@
 import RichTextEditor from './src/RichTextEditor.js';
 
-// Crear una instancia del editor
+// Create an instance of the editor
 const editor = new RichTextEditor('#editor-container', {
   height: 510,
   width: 896,
-  placeholder: 'Escribe aquí...',
+  language: 'en', // Spanish
+  placeholder: 'Write here...',
   toolbar: {
     basic: true,
     formatting: true,
@@ -21,6 +22,6 @@ const editor = new RichTextEditor('#editor-container', {
 });
 
 
-// Cambiar el tema
-console.log(editor.getContent()); // Obtén el contenido actual
-// editor.setContent('<h1>Hola mundo</h1>'); // Establece contenido en el editor
+// Change the theme
+console.log(editor.getContent()); // Get the current content.
+// editor.setContent('<h1>Hello world</h1>'); // Set content in the editor.

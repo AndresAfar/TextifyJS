@@ -1,5 +1,6 @@
 // src/RichTextEditor.js
 import "./index.css";
+import { TRANSLATIONS } from './translations';
 export class RichTextEditor {
     constructor(selector, options = {}) {
       this.container = typeof selector === 'string' 
@@ -9,7 +10,9 @@ export class RichTextEditor {
       this.options = {
         height: 510,
         width: 896,
-        placeholder: 'Comienza a escribir aquí...',
+        language: this.detectLanguage(), // Auto-detect language by default
+        translations: {}, // Custom translations can be provided
+        placeholder: 'Start writing here...',
         toolbar: {
           basic: true,
           formatting: true,
@@ -31,8 +34,43 @@ export class RichTextEditor {
         counters: true,
         ...options
       };
+
+      // Merge custom translations with default ones
+      this.translations = {
+        ...TRANSLATIONS,
+        ...this.options.translations
+      };
   
       this.init();
+    }
+
+    detectLanguage() {
+      // Try to detect language from HTML lang attribute
+      const htmlLang = document.documentElement.lang;
+      if (htmlLang && TRANSLATIONS[htmlLang]) {
+        return htmlLang;
+      }
+  
+      // Try to detect from browser
+      const browserLang = navigator.language.split('-')[0];
+      if (TRANSLATIONS[browserLang]) {
+        return browserLang;
+      }
+  
+      // Default to English
+      return 'en';
+    }
+  
+    translate(key) {
+      const keys = key.split('.');
+      let value = this.translations[this.options.language];
+      
+      for (const k of keys) {
+        if (!value) return key;
+        value = value[k];
+      }
+      
+      return value || key;
     }
   
     init() {
@@ -44,8 +82,8 @@ export class RichTextEditor {
   
     createStructure() {
       this.container.classList.add('rich-editor-container');
-      // Crear clase CSS dinámica con las dimensiones
-      const pxToRem = (px) => px / 16; // Conversión de px a rem
+      // Create dynamic CSS class with dimensions
+      const pxToRem = (px) => px / 16; // Conversion from px to rem
 
       const style = document.createElement('style');
       style.innerHTML = `
@@ -82,12 +120,12 @@ export class RichTextEditor {
         tools.push(`
           <div class="flex items-center space-x-2 border-r pr-2">
             <select class="format-block toolbar-select">
-              <option value="p">Normal</option>
-              <option value="h1">Título 1</option>
-              <option value="h2">Título 2</option>
-              <option value="h3">Título 3</option>
-              <option value="h4">Título 4</option>
-              <option value="pre">Código</option>
+              <option value="p">${this.translate('toolbar.formatting.normal')}</option>
+              <option value="h1">${this.translate('toolbar.formatting.title1')}</option>
+              <option value="h2">${this.translate('toolbar.formatting.title2')}</option>
+              <option value="h3">${this.translate('toolbar.formatting.title3')}</option>
+              <option value="h4">${this.translate('toolbar.formatting.title4')}</option>
+              <option value="pre">${this.translate('toolbar.formatting.code')}</option>
             </select>
             
             <select class="font-name toolbar-select">
@@ -103,27 +141,27 @@ export class RichTextEditor {
         tools.push(`
 
           <div class="flex items-center space-x-1 border-r pr-2">
-            <button data-command="bold" class="toolbar-btn" title="Negrita">
+            <button data-command="bold" class="toolbar-btn" title="${this.translate('toolbar.buttons.bold')}">
               <i class="fas fa-bold"></i>
             </button>
-            <button data-command="italic" class="toolbar-btn" title="Cursiva">
+            <button data-command="italic" class="toolbar-btn" title="${this.translate('toolbar.buttons.italic')}">
               <i class="fas fa-italic"></i>
             </button>
-            <button data-command="underline" class="toolbar-btn" title="Subrayado">
+            <button data-command="underline" class="toolbar-btn" title="${this.translate('toolbar.buttons.underline')}">
               <i class="fas fa-underline"></i>
             </button>
-            <button data-command="strikethrough" class="toolbar-btn" title="Tachado">
+            <button data-command="strikethrough" class="toolbar-btn" title="${this.translate('toolbar.buttons.strikethrough')}">
               <i class="fas fa-strikethrough"></i>
             </button>
             <select class="text-color toolbar-select">
-              <option value="#374151">Color de texto</option>
+              <option value="#374151">${this.translate('toolbar.textColor')}</option>
               ${this.options.colors.map(color => 
                 `<option value="${color}" style="background-color: ${color}">${color}</option>`
               ).join('')}
             </select>
   
             <select class="bg-color toolbar-select">
-              <option value="">Color de fondo</option>
+              <option value="">${this.translate('toolbar.backgroundColor')}</option>
               ${this.options.colors.map(color => 
                 `<option value="${color}" style="background-color: ${color}">${color}</option>`
               ).join('')}
@@ -136,22 +174,22 @@ export class RichTextEditor {
       if(this.options.toolbar.alignment){
         tools.push(`
           <div class="flex items-center space-x-1 border-r pr-2">
-              <button data-command="justifyLeft" class="toolbar-btn" title="Alinear izquierda">
+              <button data-command="justifyLeft" class="toolbar-btn" title="${this.translate('toolbar.buttons.alignLeft')}">
                 <i class="fas fa-align-left"></i>
               </button>
-              <button data-command="justifyCenter" class="toolbar-btn" title="Centrar">
+              <button data-command="justifyCenter" class="toolbar-btn" title="${this.translate('toolbar.buttons.alignCenter')}">
                 <i class="fas fa-align-center"></i>
               </button>
-              <button data-command="justifyRight" class="toolbar-btn" title="Alinear derecha">
+              <button data-command="justifyRight" class="toolbar-btn" title="${this.translate('toolbar.buttons.alignRight')}">
                 <i class="fas fa-align-right"></i>
               </button>
-              <button data-command="justifyFull" class="toolbar-btn" title="Justificar">
+              <button data-command="justifyFull" class="toolbar-btn" title="${this.translate('toolbar.buttons.justify')}">
                 <i class="fas fa-align-justify"></i>
               </button>
-              <button data-command="indent" class="toolbar-btn" title="Aumentar sangría">
+              <button data-command="indent" class="toolbar-btn" title="${this.translate('toolbar.buttons.indent')}">
                 <i class="fas fa-indent"></i>
               </button>
-              <button data-command="outdent" class="toolbar-btn" title="Disminuir sangría">
+              <button data-command="outdent" class="toolbar-btn" title="${this.translate('toolbar.buttons.outdent')}">
                 <i class="fas fa-outdent"></i>
               </button>
           </div>
@@ -161,10 +199,10 @@ export class RichTextEditor {
       if (this.options.toolbar.lists) {
         tools.push(`
             <div class="flex items-center space-x-1 border-r pr-2">
-                <button data-command="insertUnorderedList" class="toolbar-btn" title="Lista con viñetas">
+                <button data-command="insertUnorderedList" class="toolbar-btn" title="${this.translate('toolbar.buttons.bulletList')}">
                     <i class="fas fa-list-ul"></i>
                 </button>
-                <button data-command="insertOrderedList" class="toolbar-btn" title="Lista numerada">
+                <button data-command="insertOrderedList" class="toolbar-btn" title="${this.translate('toolbar.buttons.numberList')}">
                     <i class="fas fa-list-ol"></i>
                 </button>
             </div>
@@ -174,23 +212,23 @@ export class RichTextEditor {
       if (this.options.toolbar.media) {
         tools.push(`
             <div class="flex items-center space-x-1">
-                <button id="link-upload" data-command="createLink" class="toolbar-btn" title="Insertar enlace">
+                <button id="link-upload" data-command="createLink" class="toolbar-btn" title="${this.translate('toolbar.buttons.link')}">
                     <i class="fas fa-link"></i>
                 </button>
-                <button id="image-upload" class="toolbar-btn" title="Insertar imagen">
+                <button id="image-upload" class="toolbar-btn" title="${this.translate('toolbar.buttons.image')}">
                     <i class="fas fa-image"></i>
                 </button>
-                <button data-command="undo" class="toolbar-btn" title="Deshacer">
+                <button data-command="undo" class="toolbar-btn" title="${this.translate('toolbar.buttons.undo')}">
                     <i class="fas fa-undo"></i>
                 </button>
-                <button data-command="redo" class="toolbar-btn" title="Rehacer">
+                <button data-command="redo" class="toolbar-btn" title="${this.translate('toolbar.buttons.redo')}">
                     <i class="fas fa-redo"></i>
                 </button>
             </div>
         `);
       }
   
-      // Agregar más secciones según las opciones...
+      // Add more sections according to the options...
   
       return `
         <div class="border-b border-gray-200 p-4">
@@ -204,8 +242,8 @@ export class RichTextEditor {
     createCountersHTML() {
       return `
         <div class="bg-gray-50 px-4 py-2 border-t border-gray-200 flex justify-between text-sm text-gray-500">
-          <div class="char-count">Caracteres: 0</div>
-          <div class="word-count">Palabras: 0</div>
+          <div class="char-count">${this.translate('counters.characters')}: 0</div>
+          <div class="word-count">${this.translate('counters.words')}: 0</div>
         </div>
       `;
     }
@@ -252,7 +290,7 @@ export class RichTextEditor {
             // First we try to remove the color using removeFormat
             this.executeCommand('removeFormat');
             
-            // Como respaldo, también establecemos explícitamente el color de fondo a transparente
+            // As a backup, we also explicitly set the background color to transparent
             try {
               document.execCommand('backColor', false, 'transparent');
               // As a backup, we also explicitly set the background color to transparent:
@@ -266,23 +304,23 @@ export class RichTextEditor {
         });
       }
 
-      // Insertar imágenes mediante URL
+      // Insert images via URL
       const imageUploadButton = this.container.querySelector('#image-upload');
       if (imageUploadButton) {
           imageUploadButton.addEventListener('click', () => {
-              const url = prompt('Ingresa la URL de la imagen:');
+              const url = prompt(this.translate('toolbar.prompts.imageUrl'));
               if (url) {
                   this.insertImage(url);
               }
           });
       }
 
-      // Insertar enlace mediante URL
+      // Insert link via URL
       const linkUploadButton = this.container.querySelector('#link-upload');
       if (linkUploadButton) {
         linkUploadButton.addEventListener('click', () => {
               const command = linkUploadButton.getAttribute('data-command');
-              const url = prompt('Ingresa la URL del enlace:');
+              const url = prompt(this.translate('toolbar.prompts.linkUrl'));
               if (url) document.execCommand(command, false, url);
           });
       }
@@ -317,8 +355,8 @@ export class RichTextEditor {
       if (!this.options.counters) return;
       
       const text = this.editor.innerText;
-      this.charCount.textContent = `Caracteres: ${text.length}`;
-      this.wordCount.textContent = `Palabras: ${text.trim().split(/\s+/).length}`;
+      this.charCount.textContent = `${this.translate('counters.characters')}: ${text.length}`;
+      this.wordCount.textContent = `${this.translate('counters.words')}: ${text.trim().split(/\s+/).length}`;
     }
   
     updateButtonStates() {
@@ -332,7 +370,7 @@ export class RichTextEditor {
       });
     }
   
-    // API Pública
+    // Public API
     getContent() {
       return this.editor.innerHTML;
     }
@@ -341,12 +379,30 @@ export class RichTextEditor {
       this.editor.innerHTML = html;
       this.updateCounters();
     }
+
+    // Add method to change language dynamically
+    setLanguage(lang) {
+      if (this.translations[lang]) {
+        this.options.language = lang;
+        this.init(); // Reinitialize the editor with new language
+      } else {
+        console.warn(`Language '${lang}' not supported`);
+      }
+    }
+
+    // Add method to add new translations
+    addTranslation(lang, translation) {
+      this.translations[lang] = {
+        ...this.translations[lang],
+        ...translation
+      };
+    }
   
     destroy() {
-      // Limpiar eventos y referencias
+      // Clear events and references
       this.container.innerHTML = '';
     }
   }
 
-// Exportar como default
+// Export as default
 export default RichTextEditor;

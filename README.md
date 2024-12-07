@@ -23,9 +23,9 @@ npm install textifyjs-lib
 Or include js/css directly in your HTML file:
 
 ```bash
-    <script src="https://cdn.jsdelivr.net/npm/textifyjs-lib@1.0.0/dist/textifyjslib.umd.cjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/textifyjs-lib@1.1.0/dist/textifyjslib.umd.cjs"></script>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/textifyjs-lib@1.0.0/dist/textifyjslib.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/textifyjs-lib@1.1.0/dist/textifyjslib.css">
 ```
 
 ## Example for use
@@ -35,7 +35,7 @@ Example HTML Integration
     <!doctype html>
     <html lang="en">
     <head>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/textifyjs-lib@1.0.0/dist/textifyjslib.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/textifyjs-lib@1.1.0/dist/textifyjslib.css">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
         <title>My web</title>
     </head>
@@ -57,7 +57,7 @@ Import in a JavaScript Project
     const editor = new RichTextEditor('#editor-container', {
         height: 510,
         width: 896,
-        placeholder: 'Escribe aquí...',
+        placeholder: 'Write here...',
         toolbar: {
             basic: true,
             formatting: true,
@@ -84,6 +84,73 @@ Import in a JavaScript Project
     // Destroy the editor
     editor.destroy();
 
+```
+
+## Support for language
+English (en), Spanish (es), French (fr) language support can be added.
+
+By default it automatically detects the language by default:
+
+```
+<html lang=“en”>
+```
+
+Specify language explicitly:
+
+```bash
+const editor = new RichTextEditor('#editor-container', {
+  language: 'es' // english (en), spanish (es), french (fr)
+});
+```
+
+Or add custom translations:
+
+```bash
+const editor = new RichTextEditor('#editor-container', {
+  translations: {
+    fr: {
+        toolbar: {
+            formatting: {
+                normal: "Normal",
+                title1: "Titre 1",
+                title2: "Titre 2",
+                title3: "Titre 3",
+                title4: "Titre 4",
+                code: "Code",
+            },
+            textColor: "Couleur du texte",
+            backgroundColor: "Couleur d'arrière-plan",
+            buttons: {
+                bold: "Gras",
+                italic: "Italique",
+                underline: "Souligné",
+                strikethrough: "Strikethrough",
+                alignLeft: "Aligner à gauche",
+                alignCenter: "Centre",
+                alignRight: "Aligner à droite",
+                justify: "Justifier",
+                indent: "Augmenter l'indentation",
+                outdent: "Diminuer l'indentation",
+                bulletList: "Liste à puces",
+                numberList: "Liste numérotée",
+                link: "Insérer un lien",
+                image: "Insérer une image",
+                undo: "annuler",
+                redo: "Refaire",
+            },
+            prompts: {
+                imageUrl: "Entrez l'URL de l'image :",
+                linkUrl: "Entrez l'URL du lien:",
+            },
+        },
+        counters: {
+            characters: "Caractères",
+            words: "Mots",
+        },
+        placeholder: "Commencez à taper ici...",
+    }
+  }
+});
 ```
 
 ### Preview
