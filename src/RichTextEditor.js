@@ -1,12 +1,31 @@
 // src/RichTextEditor.js
-import "./index.css";
+import "./styles.css";
 import { TRANSLATIONS } from './translations';
 export class RichTextEditor {
     constructor(selector, options = {}) {
       this.container = typeof selector === 'string' 
         ? document.querySelector(selector) 
         : selector;
+
+      this.isTextarea = this.container.tagName.toLowerCase() === 'textarea';
       
+      if (this.isTextarea) {
+        // Store the original textarea
+        this.textarea = this.container;
+        this.textareaName = this.textarea.getAttribute('name');
+        
+        // Create a wrapper div
+        this.wrapper = document.createElement('div');
+        this.wrapper.className = 'rich-editor-wrapper';
+        this.textarea.parentNode.insertBefore(this.wrapper, this.textarea);
+        
+        // Hide the original textarea but keep it in the DOM for form submission
+        this.textarea.style.display = 'none';
+        
+        // Set the wrapper as our container
+        this.container = this.wrapper;
+      }
+
       this.options = {
         height: 510,
         width: 896,
@@ -338,9 +357,30 @@ export class RichTextEditor {
     }
   
     setupEditor() {
-      this.editor.addEventListener('input', () => this.updateCounters());
-      this.editor.addEventListener('keyup', () => this.updateButtonStates());
+      this.editor.addEventListener('input', () => {
+        this.updateCounters();
+        this.syncWithTextarea();
+      });
+      this.editor.addEventListener('keyup', () => {
+        this.updateButtonStates();
+        this.syncWithTextarea();
+      });
       this.editor.addEventListener('mouseup', () => this.updateButtonStates());
+
+      // If we're working with a textarea, set initial content
+      if (this.isTextarea && this.textarea.value) {
+        this.setContent(this.textarea.value);
+      }
+    }
+
+    syncWithTextarea() {
+      if (this.isTextarea) {
+        this.textarea.value = this.getContent();
+        
+        // Dispatch change event on the textarea
+        const event = new Event('change', { bubbles: true });
+        this.textarea.dispatchEvent(event);
+      }
     }
   
     setupCounters() {
@@ -399,8 +439,12 @@ export class RichTextEditor {
     }
   
     destroy() {
-      // Clear events and references
-      this.container.innerHTML = '';
+      if (this.isTextarea) {
+        this.textarea.style.display = '';
+        this.wrapper.remove();
+      } else {
+        this.container.innerHTML = '';
+      }
     }
   }
 

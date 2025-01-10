@@ -7,7 +7,6 @@
 ## Features
 
 - 📝 **Rich Text Editing**: Includes formatting options like bold, italic, underline, lists, and links.
-- 🎨 **Customizable**: Supports Tailwind CSS and custom styles.
 - ⚡ **Fast and Lightweight**: Built for performance and modern workflows.
 - 📦 **ESM and UMD Support**: Works seamlessly with bundlers or direct script imports.
 
@@ -23,9 +22,9 @@ npm install textifyjs-lib
 Or include js/css directly in your HTML file:
 
 ```bash
-    <script src="https://cdn.jsdelivr.net/npm/textifyjs-lib@1.1.0/dist/textifyjslib.umd.cjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/textifyjs-lib@1.2.1/dist/textifyjslib.min.js"></script>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/textifyjs-lib@1.1.0/dist/textifyjslib.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/textifyjs-lib@1.2.1/dist/textifyjs-lib.css">
 ```
 
 ## Example for use
@@ -35,7 +34,7 @@ Example HTML Integration
     <!doctype html>
     <html lang="en">
     <head>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/textifyjs-lib@1.1.0/dist/textifyjslib.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/textifyjs-lib@1.2.1/dist/textifyjs-lib.css">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" rel="stylesheet">
         <title>My web</title>
     </head>
