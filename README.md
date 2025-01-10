@@ -85,10 +85,26 @@ Import in a JavaScript Project
 
 ```
 
-## Support for language
-English (en), Spanish (es), French (fr) language support can be added.
+## Integration with `<textarea>`
 
-By default it automatically detects the language by default:
+You can now easily turn a `<textarea>` into a rich text editor:
+
+```javascript
+import RichTextEditor from 'textifyjs-lib';
+
+const textareaEditor = new RichTextEditor('#myTextarea');
+textareaEditor.init();
+```
+
+HTML:
+
+```html
+<textarea id="myTextarea" name="content"></textarea>
+```
+
+The contents of the editor are automatically synchronized with the value of the `<textarea>` to facilitate form submission.
+
+## Configuration Options
 
 ```
 <html lang=“en”>
